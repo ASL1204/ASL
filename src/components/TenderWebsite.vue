@@ -50,86 +50,100 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue';
 import NavbarHeader from './subHeader.vue';
 import FooterComponent from './Footer.vue';
+
 export default {
     name: "TenderWebsite",
-    components:{
+    components: {
         NavbarHeader,
         FooterComponent
     },
-    data() {
-        return {
-            itemsPerPage: 16,
-            currentPage: 1,
-            listData: [
-                { index: 1, title: '今日发布:' }, { index: 2, title: '资格预审公告', number: 200 }, { index: 3, title: '招标公告', number: 2050 },
-                { index: 4, title: '中标候选人公示', number: 1114 }, { index: 5, title: '中标结果公示', number: 1422 }, { index: 6, title: '更正公告公示', number: 522 },
-                { index: 7, number: 5308 }
-            ],
-            tenderNotices: [
-                { name: "广东农垦建设农场有限公司2024年水利灌溉工程建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: "2024-01-01", daysToOpening: 10 },
-                { name: "广东省江门市市属国有林场国家储备林建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: "2024-01-05", daysToOpening: 6 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 4 },
-                { name: "惠东县一二三产融合油茶产业园（2024年度）项目施工（第一标段）竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "粤招优采电子招标采购交易平台", publishTime: " 2024-04-30", daysToOpening: 14 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "连山壮族瑶族自治县2024年松材线虫病巩固镇（小三江镇、上帅镇）防治作业项目竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 1 },
-                { name: "惠东县2024年森林质量精准提升林分优化提升建设工程项目施工招标公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "连山壮族瑶族自治县2024年松材线虫病防治作业（吉田、永和、太保、福堂、和洞）采购项目竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "国信招标集团电子交易平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "2024年榄核镇农田排涝站维护管养服务项目竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 3 },
-                { name: "广东省江门市市属国有林场国家储备林建设项目（一期）2024年度营造林工程（四堡林场）竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "农业外来入侵物种普查竞争性磋商采购公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 12 },
-                { name: "山亭区农业外来入侵物种普查技术服务项目公告", industry: "农林牧渔", region: "广东", channel: "国信招标集团电子交易平台", publishTime: " 2024-04-30", daysToOpening: 4 },
-                { name: "郑州经济技术开发区农业外来入侵物种普查项目成交公告", industry: "农林牧渔", region: "广东", channel: "粤招优采电子招标采购交易平台", publishTime: " 2024-04-30", daysToOpening: 5 },
-                { name: "郑州经济技术开发区农业外来入侵物种普查项目谈判公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 9 },
-                { name: "2023年广东省农业外来入侵物种普查项目竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 8 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 3 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 10 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "粤招优采电子招标采购交易平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 2 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-                { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
-            ],
-        }
-    },
-    computed: {
-        totalPages() {
-            return Math.ceil(this.tenderNotices.length / this.itemsPerPage);
-        },
-        paginatedData() {
+    setup() {
+        const itemsPerPage = ref(16);
+        const currentPage = ref(1);
+        const listData = [
+            { index: 1, title: '今日发布:' }, { index: 2, title: '资格预审公告', number: 200 }, { index: 3, title: '招标公告', number: 2050 },
+            { index: 4, title: '中标候选人公示', number: 1114 }, { index: 5, title: '中标结果公示', number: 1422 }, { index: 6, title: '更正公告公示', number: 522 },
+            { index: 7, number: 5308 }
+        ];
+
+        const tenderNotices = [
+            { name: "广东农垦建设农场有限公司2024年水利灌溉工程建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: "2024-01-01", daysToOpening: 10 },
+            { name: "广东省江门市市属国有林场国家储备林建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: "2024-01-05", daysToOpening: 6 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 4 },
+            { name: "惠东县一二三产融合油茶产业园（2024年度）项目施工（第一标段）竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "粤招优采电子招标采购交易平台", publishTime: " 2024-04-30", daysToOpening: 14 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "连山壮族瑶族自治县2024年松材线虫病巩固镇（小三江镇、上帅镇）防治作业项目竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 1 },
+            { name: "惠东县2024年森林质量精准提升林分优化提升建设工程项目施工招标公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "连山壮族瑶族自治县2024年松材线虫病防治作业（吉田、永和、太保、福堂、和洞）采购项目竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "国信招标集团电子交易平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "2024年榄核镇农田排涝站维护管养服务项目竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 3 },
+            { name: "广东省江门市市属国有林场国家储备林建设项目（一期）2024年度营造林工程（四堡林场）竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "农业外来入侵物种普查竞争性磋商采购公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 12 },
+            { name: "山亭区农业外来入侵物种普查技术服务项目公告", industry: "农林牧渔", region: "广东", channel: "国信招标集团电子交易平台", publishTime: " 2024-04-30", daysToOpening: 4 },
+            { name: "郑州经济技术开发区农业外来入侵物种普查项目成交公告", industry: "农林牧渔", region: "广东", channel: "粤招优采电子招标采购交易平台", publishTime: " 2024-04-30", daysToOpening: 5 },
+            { name: "郑州经济技术开发区农业外来入侵物种普查项目谈判公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 9 },
+            { name: "2023年广东省农业外来入侵物种普查项目竞争性磋商公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 8 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 3 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 10 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "发布工具", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "粤招优采电子招标采购交易平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "广东省招标投标监管网", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 2 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+            { name: "广东农垦平岗农场对虾小棚养殖基地尾水处理及配套设施建设项目公告", industry: "农林牧渔", region: "广东", channel: "国义招标采购平台", publishTime: " 2024-04-30", daysToOpening: 0 },
+
+        ];
+
+        const totalPages = computed(() => {
+            return Math.ceil(tenderNotices.length / itemsPerPage.value);
+        });
+
+        const paginatedData = computed(() => {
             const result = [];
-            for (let i = 0; i < this.tenderNotices.length; i += this.itemsPerPage) {
-                result.push(this.tenderNotices.slice(i, i + this.itemsPerPage));
+            for (let i = 0; i < tenderNotices.length; i += itemsPerPage.value) {
+                result.push(tenderNotices.slice(i, i + itemsPerPage.value));
             }
             return result;
-        },
-    },
-    methods: {
-        nextPage() {
-            if (this.currentPage < this.totalPages) {
-                this.currentPage++;
+        });
+
+        const nextPage = () => {
+            if (currentPage.value < totalPages.value) {
+                currentPage.value++;
             }
-        },
-        prevPage() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
+        };
+
+        const prevPage = () => {
+            if (currentPage.value > 1) {
+                currentPage.value--;
             }
-        },
-    },
+        };
+
+        return {
+            itemsPerPage,
+            currentPage,
+            listData,
+            tenderNotices,
+            totalPages,
+            paginatedData,
+            nextPage,
+            prevPage
+        };
+    }
 }
 </script>
+
 
 <style scoped>
 * {
